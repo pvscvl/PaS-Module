@@ -4,7 +4,7 @@
     Author = 'Pascal Schoofs'
     Description = 'Useful Functions'
     PowerShellVersion = '7.x'
-    FunctionsToExport = @('Get-Password', 'Get-OnlineStatus', 'Get-WinRMStatus', 'Get-User', 'Get-WindowsBuild', 'Get-ComputerModel', 'Get-CPUModel', 'Get-GPUModel', 'Get-Diskinformation', 'Get-MemoryCapacity', 'Get-AllMailboxes')
+    FunctionsToExport = @('Get-Password', 'Get-OnlineStatus', 'Get-WinRMStatus', 'Get-User', 'Get-WindowsBuild', 'Get-ComputerModel', 'Get-CPUModel', 'Get-GPUModel', 'Get-Diskinformation', 'Get-MemoryCapacity', 'Get-AllMailboxes', 'Get-WinRMStatuswip', 'Get-Userwip')
     RootModule = 'PaS-Module.psm1'
     CompatiblePSEditions = @('Desktop')
     AliasesToExport = @()
