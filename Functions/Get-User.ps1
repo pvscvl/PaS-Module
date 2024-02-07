@@ -13,5 +13,5 @@ function Get-User {
 	$OUTPUT = query user /server:$Computer
 	$USER = ($OUTPUT -split "`r`n")[1] -split "\s+" | Select-Object -Index 1
 	$SESSIONSTATUS = ($OUTPUT -split "`r`n")[1] -split "\s+" | Select-Object -Index 4
-	Write-Host "$Computer User:`t$USER `t($SESSIONSTATUS)"
+	Write-Host "$Computer`tUser: $USER `t($SESSIONSTATUS)"
 }
