@@ -8,6 +8,15 @@ function Get-DiskInformation {
         Write-Host "$Computer`tOffline"
 	return
 	}
+	
+	if (-Not (Get-WinRMStatuswip -Computer $Computer)) {
+		Write-Host "$Computer`tNo Remote Management possible"
+		return
+	}
+	
+	
+
+
 	$disks = Get-CimInstance -ComputerName $Computer -ClassName Win32_DiskDrive
 	foreach ($disk in $disks) {
 		$SizeInGB = [math]::round($disk.Size / 1GB, 2)
