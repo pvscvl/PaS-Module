@@ -11,7 +11,7 @@ function Get-GPUModel {
 #	}
 
 	if (-Not (Get-WinRMStatus -Computer $Computer)) {
-		Write-Host "$Computer`tNo WinRM"
+		Write-Host "$Computer`tN/A"
 		return
 	}
 	

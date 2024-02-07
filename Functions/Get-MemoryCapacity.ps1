@@ -6,7 +6,7 @@ function Get-MemoryCapacity {
 	)
 
 	if (-Not (Get-OnlineStatus -Computer $Computer)) {
-                Write-Host "$Computer`tOffline"
+                Write-Host "$Computer`tN/A"
 		return
 	}
 

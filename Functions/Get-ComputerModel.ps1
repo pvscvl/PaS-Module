@@ -6,10 +6,10 @@ function Get-ComputerModel{
 	)
 
 	if (-Not (Get-OnlineStatus -Computer $Computer)) {
-                Write-Host "$Computer`tOffline"
+                Write-Host "$Computer`tN/A"
 		return
 	}
-	
+
 	Write-Host -NoNewline "$Computer`tModel: "
 	(Get-WmiObject -ComputerName $Computer -ClassName Win32_ComputerSystem).Model
 }
