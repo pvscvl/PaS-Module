@@ -4,7 +4,7 @@
 	Author = 'Pascal Schoofs'
 	Description = 'Useful Functions'
 	PowerShellVersion = '7.4.0'
-	FunctionsToExport = @('Test-Credentials', 'Test-DefaultCredentials', 'Test-ADCredentials', 'Get-Password', 'Get-OnlineStatus', 'Get-WinRMStatus', 'Get-User', 'Get-WindowsBuild', 'Get-ComputerModel', 'Get-CPUModel', 'Get-GPUModel', 'Get-Diskinformation', 'Get-MemoryCapacity', 'Get-AllMailboxes', 'Get-WindowsVersion', 'Get-oldWinRMStatus', 'Get-oldUser', 'Start-WSUSCheckin')
+	FunctionsToExport = @('Export-FirefoxProfile', 'Import-FirefoxProfile', 'Test-Credentials', 'Test-DefaultCredentials', 'Test-ADCredentials', 'Get-Password', 'Get-OnlineStatus', 'Get-WinRMStatus', 'Get-User', 'Get-WindowsBuild', 'Get-ComputerModel', 'Get-CPUModel', 'Get-GPUModel', 'Get-Diskinformation', 'Get-MemoryCapacity', 'Get-AllMailboxes', 'Get-WindowsVersion', 'Get-oldWinRMStatus', 'Get-oldUser', 'Start-WSUSCheckin')
 	RootModule = 'PaS-Module.psm1'
 	CompatiblePSEditions = @('Desktop')
 	AliasesToExport = @()
