@@ -17,10 +17,9 @@ function Test-Credentials {
 	$user = [System.DirectoryServices.AccountManagement.UserPrincipal]::FindByIdentity($DS, $UserName)
 
 	if ($user) {
-		if ($user.IsAccountLockedOut()) {
-			Write-Host "User $UserName is locked out. Unlocking..."
-			$user.UnlockAccount()
-			Write-Host "User $UserName has been unlocked."
+		if ($User.AccountLockoutTime -ne $null) {
+			$User.UnlockAccount()
+						Write-Host "Account unlocked"
 		}
 	}
 	$VALIDCRED = $DS.ValidateCredentials($UserName, [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePassword)))
@@ -30,4 +29,11 @@ function Test-Credentials {
 	} else {
 		Write-Warning "Credentials for $UserName were incorrect."
 	}
+}
+
+
+
+if ($User.AccountLockoutTime -ne $null) {
+	$User.UnlockAccount()
+				Write-Host "Account unlocked"
 }

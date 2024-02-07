@@ -26,7 +26,7 @@ function Test-DefaultCredentials {
 		$User = [System.DirectoryServices.AccountManagement.UserPrincipal]::FindByIdentity($DS, $UserName)
 		if ($User.AccountLockoutTime -ne $null) {
 			$User.UnlockAccount()
-			Write-Host "Account unlocked"
+#			Write-Host "Account unlocked"
 		}
 	}
 
