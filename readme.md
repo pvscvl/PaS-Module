@@ -1,4 +1,12 @@
 # Powershell Profiles
+
+## Unblock files:
+
+`get-childItem -Path .\Documents\PowerShell\Modules\PaS-Module\*.ps* | Unblock-File`
+
+`get-childItem -Path .\Documents\PowerShell\Modules\PaS-Module\Functions\*.ps* | Unblock-File`
+
+
 ## Links
 
 * [How to Make Use Of PowerShell Profile Files](https://devblogs.microsoft.com/powershell-community/how-to-make-use-of-powershell-profile-files/)
@@ -27,6 +35,7 @@ PaS-Module\
 
 If placed in one of the path's as defined in `$env:PSModulePath` 
 you can simply do it like this: `Import-Module PaS-Module`
+
 
 
 ## PaS-Module.psd1
