@@ -4,18 +4,15 @@ function Get-DiskInformation {
 		[ValidateNotNullOrEmpty()]
 		[string]$Computer
 	)
-	if (-Not (Get-OnlineStatus -Computer $Computer)) {
-        Write-Host "$Computer`tOffline"
-	return
-	}
-	
-	if (-Not (Get-WinRMStatuswip -Computer $Computer)) {
-		Write-Host "$Computer`tNo Remote Management possible"
+#	if (-Not (Get-OnlineStatus -Computer $Computer)) {
+#        Write-Host "$Computer`tOffline"
+#	return
+#	}
+
+	if (-Not (Get-WinRMStatus -Computer $Computer)) {
+		Write-Host "$Computer`tNo WinRM"
 		return
 	}
-	
-	
-
 
 	$disks = Get-CimInstance -ComputerName $Computer -ClassName Win32_DiskDrive
 	foreach ($disk in $disks) {

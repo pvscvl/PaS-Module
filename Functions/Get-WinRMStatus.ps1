@@ -5,11 +5,9 @@ function Get-WinRMStatus {
 		[string]$Computer
 	)
 
-	$wsmanResult = Test-WSMan -ComputerName $Computer -ErrorAction SilentlyContinue
-	if ($wsmanResult) {
-		return $true
-	}
-	else {
+	if (Test-Connection -ComputerName $Computer -Count 1 -Quiet) {
+		return (Test-WSMan -ComputerName $Computer -ErrorAction SilentlyContinue) -ne $null
+	} else {
 		return $false
 	}
 }

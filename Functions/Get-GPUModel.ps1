@@ -10,14 +10,10 @@ function Get-GPUModel {
 #	return
 #	}
 
-	if (-Not (Get-WinRMStatuswip -Computer $Computer)) {
-		Write-Host "$Computer`tNo Remote Management possible"
+	if (-Not (Get-WinRMStatus -Computer $Computer)) {
+		Write-Host "$Computer`tNo WinRM"
 		return
 	}
-	
-	
-
-
 	
 	$GPUs = Get-CimInstance -ComputerName $Computer -ClassName Win32_VideoController | Where-Object {$_.Name -notmatch 'DameWare'}
 	foreach ($GPU in $GPUs) {
