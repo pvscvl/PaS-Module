@@ -4,7 +4,7 @@ function Start-WSUSCheckin {
 		[ValidateNotNullOrEmpty()]
 		[string]$Computer
 	)
-	if (-Not (Get-WinRMStatus -Computer $Computer)) {
+	if (-Not (Test-WinRMStatus -Computer $Computer)) {
 		Write-Host "$Computer`tN/A"
 		return
 	}

@@ -5,8 +5,8 @@ function Get-oldUser {
 		[string]$Computer
 	)
 
-	if (-Not (Get-OnlineStatus -Computer $Computer)) {
-                Write-Host "$Computer`tOffline"
+	if (-Not (Test-OnlineStatus -Computer $Computer)) {
+                Write-Host "$Computer`tN/A"
 		return
 	}
 	query user /server:$Computer

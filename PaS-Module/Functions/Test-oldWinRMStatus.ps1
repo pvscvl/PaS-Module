@@ -1,4 +1,4 @@
-function Get-oldWinRMStatus{
+function Test-oldWinRMStatus{
 	param (
 		[Parameter(Mandatory = $true)]
 		[ValidateNotNullOrEmpty()]

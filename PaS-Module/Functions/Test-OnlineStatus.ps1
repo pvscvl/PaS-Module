@@ -1,4 +1,4 @@
-function Get-OnlineStatus {
+function Test-OnlineStatus {
 	param (
 		[Parameter(Mandatory = $true)]
 		[ValidateNotNullOrEmpty()]
