@@ -13,9 +13,10 @@ function Test-Credentials {
 	$DS = New-Object System.DirectoryServices.AccountManagement.PrincipalContext('domain')
 	$user = [System.DirectoryServices.AccountManagement.UserPrincipal]::FindByIdentity($DS, $UserName)
 	if ($user) {
-		if ($User.AccountLockoutTime -ne $null) {
+	#	if ($User.AccountLockoutTime -ne $null) {
+		if ($null -ne $User.AccountLockoutTime) {
 			$User.UnlockAccount()
-						Write-Host "Account unlocked"
+			Write-Host "Account unlocked"
 		}
 	}
 	$VALIDCRED = $DS.ValidateCredentials($UserName, [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePassword)))

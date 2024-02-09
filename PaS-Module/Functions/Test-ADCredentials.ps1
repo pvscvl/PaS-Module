@@ -11,7 +11,8 @@ function Test-ADCredentials {
 		$DS = New-Object System.DirectoryServices.AccountManagement.PrincipalContext('domain')
 		$user = [System.DirectoryServices.AccountManagement.UserPrincipal]::FindByIdentity($DS, $UserName)
 		if ($user) {
-			if ($User.AccountLockoutTime -ne $null) {
+	#		if ($User.AccountLockoutTime -ne $null) {
+			if ($null -ne $User.AccountLockoutTime) {
 				$User.UnlockAccount()
 							Write-Host "Account unlocked"
 			}
