@@ -5,8 +5,8 @@ function Get-WindowsVersion{
 		[string]$Computer
 	)
 
-	if (-Not (Get-OnlineStatus -Computer $Computer)) {
-                Write-Host "$Computer`tN/A"
+	if (-Not (Get-WinRMStatus -Computer $Computer)) {
+		Write-Host "$Computer`tN/A"
 		return
 	}
 

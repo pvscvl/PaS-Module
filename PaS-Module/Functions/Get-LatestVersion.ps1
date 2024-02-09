@@ -14,7 +14,6 @@ function Get-LatestVersion {
 
 	$REPOSITORYNAME = [System.IO.Path]::GetFileName($REPOSITORY)  # Extract the repository name
 	$LATESTREPOVERSION = (Invoke-RestMethod -Uri "https://api.github.com/repos/$REPOSITORY/releases/latest").tag_name
-
 	Write-Output "Latest $REPOSITORYNAME version: $LATESTREPOVERSION "
 }
 

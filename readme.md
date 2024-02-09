@@ -1,14 +1,7 @@
 # Powershell Profiles
-
-## Unblock files:
-
-`get-childItem -Path .\Documents\PowerShell\Modules\PaS-Module\*.ps* | Unblock-File`
-
-`get-childItem -Path .\Documents\PowerShell\Modules\PaS-Module\Functions\*.ps* | Unblock-File`
-
-
 ## Links
 
+* [PowerShell – Single PSM1 file versus multi-file modules](https://evotec.xyz/powershell-single-psm1-file-versus-multi-file-modules/)
 * [How to Make Use Of PowerShell Profile Files](https://devblogs.microsoft.com/powershell-community/how-to-make-use-of-powershell-profile-files/)
 * [Loading PowerShell Profiles from Other Script Files](https://www.donnfelker.com/loading-powershell-profiles-from-other-script-files/)
 * [Splitting my script into multiple .ps1 files: good/bad practice?](https://www.reddit.com/r/PowerShell/comments/hya8o0/splitting_my_script_into_multiple_ps1_files/)
@@ -35,7 +28,6 @@ PaS-Module\
 
 If placed in one of the path's as defined in `$env:PSModulePath` 
 you can simply do it like this: `Import-Module PaS-Module`
-
 
 
 ## PaS-Module.psd1
@@ -74,6 +66,32 @@ you can simply do it like this: `Import-Module PaS-Module`
 
 
 
+## F7History
+
+Install with:
+* `Install-Module -Name "F7History"`
+
+Import with (Put it in $profile):
+* `Import-Module -Name "F7History" -ArgumentList  @{Key = "F7"; AllKey = "F8"}`
+
+
+F7 opens History of Session
+F8 opens complete History (including Timestamps)
+
+## Out-ConsoleGridView
+
+Install with:
+* `Install-Module microsoft.powershell.consoleguitools`
+
+Usage Example:
+* `Get-Service | Out-ConsoleGridView`
+
+* `$SERVICES=Get-Service | Out-ConsoleGridView`
+
+This stores multiple items in a variable
+
+
+
 ## Lists
 
 - [x] Aufräumen
@@ -81,4 +99,3 @@ you can simply do it like this: `Import-Module PaS-Module`
 - [ ] Nix tun
 - [ ] GARNICHTS TUN
 - [ ] verschlafen
-

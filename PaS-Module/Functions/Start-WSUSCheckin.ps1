@@ -4,19 +4,13 @@ function Start-WSUSCheckin {
 		[ValidateNotNullOrEmpty()]
 		[string]$Computer
 	)
-
-#	if (-Not (Get-OnlineStatus -Computer $Computer)) {
-#                Write-Host "$Computer`tOffline"
-#		return
-#	}
-
 	if (-Not (Get-WinRMStatus -Computer $Computer)) {
 		Write-Host "$Computer`tN/A"
 		return
 	}
-	Write-Host "Starting gpupdate..."
+	Write-Host "$Computer`tStarting gpupdate..."
 	Invoke-Command -ComputerName $Computer -ScriptBlock { gpupdate }
-
+	Write-Host "$Computer`tgpupdate complete."
 	$targetDir = 'C:\bin'
 	$psexecPath = Join-Path $targetDir 'psexec.exe'
 	$pstoolsZipUrl = 'https://download.sysinternals.com/files/PSTools.zip'
@@ -28,7 +22,6 @@ function Start-WSUSCheckin {
 			Invoke-WebRequest -Uri $pstoolsZipUrl -OutFile $zipFilePath -ErrorAction Stop
 			Write-Host "Extracting PSTools"
 			Expand-Archive -Path $zipFilePath -DestinationPath $targetDir -Force
-			# Renaming the extracted file to psexec.exe if needed (it might be in a subdirectory inside the zip)
 			$extractedPsexecPath = Get-ChildItem -Path $targetDir -Filter 'psexec.exe' -Recurse | Select-Object -First 1
 			if ($extractedPsexecPath) {
 				Move-Item -Path $extractedPsexecPath.FullName -Destination $psexecPath -Force
@@ -42,7 +35,7 @@ function Start-WSUSCheckin {
 	} else {
 		Write-Host ""
 	}
-	Write-Output "$Computer : gpupdate complete. Service WUAUSERV starting."
+	Write-Host "$Computer`tStarting WUAUSERV Service..."
 	Invoke-Command -ComputerName $Computer -ScriptBlock {
 		Start-Service wuauserv -Verbose
 	}
@@ -51,7 +44,6 @@ function Start-WSUSCheckin {
 	& c:\bin\psexec.exe -s \\$Computer powershell.exe -Command $Cmd
 
 	Write-Host "Waiting 15 seconds for Sync Updates webservice to complete to add to the wuauserv queue so that it can be reported on"
-#	Start-Sleep -Seconds 10
 
 	$TOTALSLEEPTIME = 15
 	$REFRESHRATE = 1
@@ -61,15 +53,40 @@ function Start-WSUSCheckin {
 		Start-Sleep -Seconds $REFRESHRATE
 	}
 	
+	Write-Host "$Computer`tStarting gpupdate..."
 
-	Write-Output "$Computer : Starting wuauclt /detectnow, /reportnow and /updatenow. Also Starting Usoclient.exe with Parameter ScanInstallWait"
+	Write-Output "$Computer`tStarting wuauclt /detectnow"
+		Invoke-Command -ComputerName $Computer -ScriptBlock {
+			wuauclt /detectnow
+		}
 
+	Write-Output "$Computer`tStarting ComObject.Microsoft.Update.AutoUpdate.DetectNow"
+		Invoke-Command -ComputerName $Computer -ScriptBlock {
+			(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+		}
 
-	Invoke-Command -ComputerName $Computer -ScriptBlock {
-		wuauclt /detectnow
-		(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
-		wuauclt /reportnow
-		wuauclt /updatenow
-		c:\windows\system32\UsoClient.exe ScanInstallWait
-	}
+	Write-Output "$Computer`tStarting wuauclt /reportnow"
+		Invoke-Command -ComputerName $Computer -ScriptBlock {
+			wuauclt /reportnow
+		}
+
+	Write-Output "$Computer`tStarting wuauclt /updatenow"
+		Invoke-Command -ComputerName $Computer -ScriptBlock {
+			wuauclt /updatenow
+		}
+
+	Write-Output "$Computer`tStarting c:\windows\system32\UsoClient.exe ScanInstallWait"
+		Invoke-Command -ComputerName $Computer -ScriptBlock {
+			c:\windows\system32\UsoClient.exe ScanInstallWait
+		}
+
+	<# 
+		Invoke-Command -ComputerName $Computer -ScriptBlock {
+			wuauclt /detectnow
+			(New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+			wuauclt /reportnow
+			wuauclt /updatenow
+			c:\windows\system32\UsoClient.exe ScanInstallWait
+		}
+	#>
 }

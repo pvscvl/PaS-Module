@@ -4,11 +4,7 @@ function Get-DiskInformation {
 		[ValidateNotNullOrEmpty()]
 		[string]$Computer
 	)
-#	if (-Not (Get-OnlineStatus -Computer $Computer)) {
-#        Write-Host "$Computer`tOffline"
-#	return
-#	}
-
+	
 	if (-Not (Get-WinRMStatus -Computer $Computer)) {
 		Write-Host "$Computer`tN/A"
 		return

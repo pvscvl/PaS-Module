@@ -3,7 +3,7 @@ function Unlock-ADAccount {
 		[Parameter(Mandatory = $true)]
 		[string]$SamAccountName
 	)
-    
+
 	try {
 		Unlock-ADAccount -Identity $SamAccountName -ErrorAction Stop
 		Write-Host "Account '$SamAccountName' has been unlocked."

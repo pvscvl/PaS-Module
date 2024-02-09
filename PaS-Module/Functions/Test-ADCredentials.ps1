@@ -4,7 +4,6 @@ function Test-ADCredentials {
 		[string]$UserName,
 		[string]$Password
 	)
-
 	if (!($UserName) -or !($Password)) {
 		Write-Warning 'Test-ADCredential: Please specify both user name and password'
 	} else {
@@ -17,7 +16,6 @@ function Test-ADCredentials {
 							Write-Host "Account unlocked"
 			}
 		}
-	
 		$VALIDCRED = $DS.ValidateCredentials($UserName, $Password)
 		if ($VALIDCRED) {
 			Write-Output "Credentials for $UserName were correct."
