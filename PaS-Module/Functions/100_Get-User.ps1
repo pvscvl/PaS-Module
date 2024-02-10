@@ -15,3 +15,4 @@ function Get-User {
 	$SESSIONSTATUS = ($OUTPUT -split "`r`n")[1] -split "\s+" | Select-Object -Index 4
 	Write-Host "$Computer`tUser: $USER `t($SESSIONSTATUS)"
 }
+

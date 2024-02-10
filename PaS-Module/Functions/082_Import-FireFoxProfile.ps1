@@ -57,3 +57,4 @@ function Import-FirefoxProfile {
 		Write-Host "No Firefox profile backup found in the specified path."
 	}
 }
+

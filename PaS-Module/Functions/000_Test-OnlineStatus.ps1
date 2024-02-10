@@ -7,3 +7,4 @@ function Test-OnlineStatus {
 	$ping = Test-Connection -ComputerName $Computer -Count 1 -Quiet
 	return $ping
 }
+

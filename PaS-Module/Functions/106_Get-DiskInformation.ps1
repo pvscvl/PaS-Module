@@ -17,3 +17,4 @@ function Get-DiskInformation {
 		Write-Host "$Computer Disk ($($disk.DeviceID)):`t Size = $SizeInGB GB, Type = $MediaType"
 	}
 }
+

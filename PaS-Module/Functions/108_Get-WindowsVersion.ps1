@@ -37,3 +37,4 @@ function Get-WindowsVersion{
 	$winVersion = $BuildNumberToWindowsVersion[$buildNumber]
 	Write-Host "$Computer`t$winVersion"
 } 
+

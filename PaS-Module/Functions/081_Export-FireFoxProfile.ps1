@@ -95,3 +95,4 @@ function Export-FirefoxProfile {
 
 	Write-Host "Firefox profile backup complete. Firefox has been restarted."
 }
+

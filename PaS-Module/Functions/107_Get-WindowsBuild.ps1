@@ -13,3 +13,4 @@ function Get-WindowsBuild{
 	Write-Host -NoNewline "$Computer`tBuild: "
 	(Get-CimInstance  -ComputerName $Computer -ClassName Win32_OperatingSystem).BuildNumber
 } 
+

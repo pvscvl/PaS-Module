@@ -21,3 +21,4 @@ function Get-Password {
 	Write-Host "$GENERATED_PASSWORD"
 	Write-Host ""
 }
+

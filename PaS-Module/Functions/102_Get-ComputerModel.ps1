@@ -13,3 +13,4 @@ function Get-ComputerModel{
 	Write-Host -NoNewline "$Computer`tModel: "
 	(Get-CimInstance -ComputerName $Computer -ClassName Win32_ComputerSystem).Model
 }
+

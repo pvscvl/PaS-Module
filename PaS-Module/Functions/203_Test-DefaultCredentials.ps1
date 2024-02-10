@@ -29,3 +29,4 @@ function Test-DefaultCredentials {
 		Write-Host "User is not using any of the default passwords."
 	}
 }
+

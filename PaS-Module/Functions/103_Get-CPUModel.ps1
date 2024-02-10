@@ -13,3 +13,4 @@ function Get-CPUModel {
         Write-Host -NoNewline "$Computer`tCPU: "
         (Get-CimInstance -ComputerName $Computer -ClassName Win32_Processor).Name
 }
+

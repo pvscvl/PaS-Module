@@ -15,3 +15,4 @@ function Get-GPUModel {
 		Write-Host "$Computer - GPU:`t $($GPU.Name)"
 	}
 }
+

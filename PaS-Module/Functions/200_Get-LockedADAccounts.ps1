@@ -7,3 +7,4 @@ function Get-LockedADAccounts {
 		$lockedOutAccounts | Select-Object $selectedProperties
 	}
 }
+

@@ -17,4 +17,3 @@ function Get-LatestVersion {
 	Write-Output "Latest $REPOSITORYNAME version: $LATESTREPOVERSION "
 }
 
-

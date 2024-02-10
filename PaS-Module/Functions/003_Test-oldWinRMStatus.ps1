@@ -13,3 +13,4 @@ function Test-oldWinRMStatus{
 		return $false
 	}
 }
+

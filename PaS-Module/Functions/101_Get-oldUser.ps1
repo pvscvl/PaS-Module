@@ -11,3 +11,4 @@ function Get-oldUser {
 	}
 	query user /server:$Computer
 } 
+

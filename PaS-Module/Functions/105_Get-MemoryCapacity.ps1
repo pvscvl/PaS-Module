@@ -13,3 +13,4 @@ function Get-MemoryCapacity {
 		$MEMORY = (Get-CimInstance -ComputerName $Computer -ClassName Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum / 1GB
         Write-Host "$Computer`tMemory: $MEMORY GB"
 }
+

@@ -17,3 +17,4 @@ function Merge-Module {
         }
         Copy-Item -Path "$ModulePathSource\$ModuleName.psd1" "$ModulePathTarget\$ModuleName.psd1"
 }
+

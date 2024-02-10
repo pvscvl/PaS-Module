@@ -11,3 +11,4 @@ function Get-AllMailboxes {
 			Out-GridView
 	Remove-PSSession $Session
 }
+
