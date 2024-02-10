@@ -6,7 +6,7 @@ function Get-User {
 	)
 	
 	if (-Not (Test-OnlineStatus -Computer $Computer)) {
-                Write-Host "$Computer`tOffline"
+                Write-Host "$Computer`tN/A"
 		return
 
 	}  

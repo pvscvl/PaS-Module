@@ -1,5 +1,5 @@
 @{
-	ModuleVersion = '0.0.23'
+	ModuleVersion = '0.0.25'
 	GUID = '55db66c7-37e0-4a80-9d41-7e5136282c2c'
 	Author = 'Pascal Schoofs'
 	Description = 'Useful Functions'
