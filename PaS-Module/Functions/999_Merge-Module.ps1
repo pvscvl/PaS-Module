@@ -1,25 +1,5 @@
 function Merge-Module {
         param (
-		[string] $MODULENAME,
-		[string] $MODULEPATHSRC,
-		[string] $MODULEPATHDEST
-        )
-        $SCRIPTFUNCTIONS = @( Get-ChildItem -Path $MODULEPATHSRC\*.ps1 -ErrorAction SilentlyContinue -Recurse )
-        $MODULEPSM = @( Get-ChildItem -Path $MODULEPATHSRC\*.psm1 -ErrorAction SilentlyContinue -Recurse )
-        foreach ($FilePath in $SCRIPTFUNCTIONS) {
-		$RESULTS = [System.Management.Automation.Language.Parser]::ParseFile($FilePath, [ref]$null, [ref]$null)
-		$FUNCTIONS = $RESULTS.EndBlock.Extent.Text
-		$FUNCTIONS | Add-Content -Path "$MODULEPATHDEST\$MODULENAME.psm1"
-        }
-        foreach ($FilePath in $MODULEPSM) {
-		$CONTENT = Get-Content $FilePath
-		$CONTENT | Add-Content -Path "$MODULEPATHDEST\$MODULENAME.psm1"
-        }
-        Copy-Item -Path "$MODULEPATHSRC\$MODULENAME.psd1" "$MODULEPATHDEST\$MODULENAME.psd1"
-}
-
-function Merge-Modulesource {
-        param (
 		[string] $ModuleName,
 		[string] $ModulePathSource,
 		[string] $ModulePathTarget
