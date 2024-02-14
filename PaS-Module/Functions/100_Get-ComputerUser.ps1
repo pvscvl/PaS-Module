@@ -1,4 +1,4 @@
-function Get-User {
+function Get-ComputerUser {
 	param (
 		[Parameter(Mandatory = $true)]
 		[ValidateNotNullOrEmpty()]

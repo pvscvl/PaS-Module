@@ -233,7 +233,7 @@ function Import-FirefoxProfile {
 		Write-Host "No Firefox profile backup found in the specified path."
 	}
 }
-function Get-User {
+function Get-ComputerUser {
 	param (
 		[Parameter(Mandatory = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -398,6 +398,8 @@ function Get-WindowsVersion{
 	$winVersion = $BuildNumberToWindowsVersion[$buildNumber]
 	Write-Host "$Computer`t$winVersion"
 }
+
+<#
 function Get-AllMailboxes {
 	$UserCredential = Import-Clixml -Path C:\Users\Pascal\tkm.cred
 	$Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://tkm-sv-ex01.tkm.local/PowerShell/ -Authentication Kerberos -Credential $UserCredential
@@ -411,6 +413,7 @@ function Get-AllMailboxes {
 			Out-GridView
 	Remove-PSSession $Session
 }
+#>
 function Get-LockedADAccounts {
 	$lockedOutAccounts = Search-AdAccount -LockedOut
 	$selectedProperties = "lastlogondate", "name", "samaccountname"

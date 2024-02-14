@@ -1,3 +1,5 @@
+<# 
+
 function Get-AllMailboxes {
 	$UserCredential = Import-Clixml -Path C:\Users\Pascal\tkm.cred
 	$Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://tkm-sv-ex01.tkm.local/PowerShell/ -Authentication Kerberos -Credential $UserCredential
@@ -12,3 +14,4 @@ function Get-AllMailboxes {
 	Remove-PSSession $Session
 }
 
+#>
