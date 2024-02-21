@@ -233,23 +233,6 @@ function Import-FirefoxProfile {
 		Write-Host "No Firefox profile backup found in the specified path."
 	}
 }
-function Get-ComputerUser {
-	param (
-		[Parameter(Mandatory = $true)]
-		[ValidateNotNullOrEmpty()]
-		[string]$Computer
-	)
-	
-	if (-Not (Test-OnlineStatus -Computer $Computer)) {
-                Write-Host "$Computer`tN/A"
-		return
-
-	}  
-	$OUTPUT = query user /server:$Computer
-	$USER = ($OUTPUT -split "`r`n")[1] -split "\s+" | Select-Object -Index 1
-	$SESSIONSTATUS = ($OUTPUT -split "`r`n")[1] -split "\s+" | Select-Object -Index 4
-	Write-Host "$Computer`tUser: $USER `t($SESSIONSTATUS)"
-}
 function Get-oldUser {
 	param (
 		[Parameter(Mandatory=$true)]
@@ -399,21 +382,6 @@ function Get-WindowsVersion{
 	Write-Host "$Computer`t$winVersion"
 }
 
-<#
-function Get-AllMailboxes {
-	$UserCredential = Import-Clixml -Path C:\Users\Pascal\tkm.cred
-	$Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://tkm-sv-ex01.tkm.local/PowerShell/ -Authentication Kerberos -Credential $UserCredential
-	Import-PSSession $Session -DisableNameChecking
-		Get-Recipient -ResultSize Unlimited | 
-		Select-Object DisplayName,
-			@{Name="Type";Expression={$_.RecipientType}},
-			PrimarySmtpAddress,
-			@{Name="EmailAddresses";Expression={($_.EmailAddresses | Where-Object {$_ -clike "smtp*"} | ForEach-Object {$_ -replace "smtp:",""}) -join ","}} |
-			Sort-Object DisplayName | 
-			Out-GridView
-	Remove-PSSession $Session
-}
-#>
 function Get-LockedADAccounts {
 	$lockedOutAccounts = Search-AdAccount -LockedOut
 	$selectedProperties = "lastlogondate", "name", "samaccountname"
@@ -441,7 +409,8 @@ function Test-Credentials {
 	#	if ($User.AccountLockoutTime -ne $null) {
 		if ($null -ne $User.AccountLockoutTime) {
 			$User.UnlockAccount()
-			Write-Host "Account unlocked"
+			Write-Host "Account of $UserName unlocked."
+			Write-Host "Account of $User unlocked."
 		}
 	}
 	$VALIDCRED = $DS.ValidateCredentials($UserName, [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePassword)))
@@ -468,7 +437,8 @@ function Test-ADCredentials {
 	#		if ($User.AccountLockoutTime -ne $null) {
 			if ($null -ne $User.AccountLockoutTime) {
 				$User.UnlockAccount()
-							Write-Host "Account unlocked"
+				Write-Host "Account of $UserName unlocked."
+				Write-Host "Account of $User unlocked."
 			}
 		}
 		$VALIDCRED = $DS.ValidateCredentials($UserName, $Password)
@@ -495,7 +465,8 @@ function Test-DefaultCredentials {
 		$isValid = $DS.ValidateCredentials($UserName, $PASSWORD)
 			if ($isValid) {
 			$PasswordPrefix = $PASSWORD.Substring(0, 3)
-			Write-Warning "Password starting with $PasswordPrefix is in use."
+			Write-Warning "${PasswordPrefix}-default password is in use."
+		#	Write-Warning "$PasswordPrefix default password is in use."	
 			$passwordFound = $true
 			break
 		}
@@ -503,25 +474,30 @@ function Test-DefaultCredentials {
 	#	if ($User.AccountLockoutTime -ne $null) {
 		if ($null -ne $User.AccountLockoutTime) {
 				$User.UnlockAccount()
-#			Write-Host "Account unlocked"
+				Write-Host "Account of $UserName unlocked."
+				Write-Host "Account of $User unlocked."
 		}
 	}
 	if (-not $passwordFound) {
-		Write-Host "User is not using any of the default passwords."
+		Write-Host "$UserName is not using any of the default passwords."
 	}
 }
 function Unlock-ADAccount {
 	param (
 		[Parameter(Mandatory = $true)]
-		[string]$SamAccountName
+		[string]$UserName
 	)
 
+	$User = [System.DirectoryServices.AccountManagement.UserPrincipal]::FindByIdentity($DS, $UserName)
 	try {
-		Unlock-ADAccount -Identity $SamAccountName -ErrorAction Stop
-		Write-Host "Account '$SamAccountName' has been unlocked."
+		if ($null -ne $User.AccountLockoutTime) {
+			$User.UnlockAccount()
+			Write-Host "Account of $UserName unlocked."
+			Write-Host "Account of $User unlocked."
+		}
 	}
 	catch {
-		Write-Host "Failed to unlock account '$SamAccountName'."
+		Write-Host "Failed to unlock account '$UserName'."
 		Write-Host "Error: $_"
 	}
 }
