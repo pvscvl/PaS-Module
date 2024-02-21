@@ -14,7 +14,8 @@ function Test-ADCredentials {
 	#		if ($User.AccountLockoutTime -ne $null) {
 			if ($null -ne $User.AccountLockoutTime) {
 				$User.UnlockAccount()
-							Write-Host "Account unlocked"
+				Write-Host "Account of $UserName unlocked."
+				Write-Host "Account of $User unlocked."
 			}
 		}
 		$VALIDCRED = $DS.ValidateCredentials($UserName, $Password)

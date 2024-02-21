@@ -14,7 +14,8 @@ function Test-DefaultCredentials {
 		$isValid = $DS.ValidateCredentials($UserName, $PASSWORD)
 			if ($isValid) {
 			$PasswordPrefix = $PASSWORD.Substring(0, 3)
-			Write-Warning "Password starting with $PasswordPrefix is in use."
+			Write-Warning "${PasswordPrefix}-default password is in use."
+		#	Write-Warning "$PasswordPrefix default password is in use."	
 			$passwordFound = $true
 			break
 		}
@@ -22,11 +23,12 @@ function Test-DefaultCredentials {
 	#	if ($User.AccountLockoutTime -ne $null) {
 		if ($null -ne $User.AccountLockoutTime) {
 				$User.UnlockAccount()
-#			Write-Host "Account unlocked"
+				Write-Host "Account of $UserName unlocked."
+				Write-Host "Account of $User unlocked."
 		}
 	}
 	if (-not $passwordFound) {
-		Write-Host "User is not using any of the default passwords."
+		Write-Host "$UserName is not using any of the default passwords."
 	}
 }
 
