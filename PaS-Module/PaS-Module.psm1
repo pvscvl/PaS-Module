@@ -7,6 +7,9 @@ function Test-OnlineStatus {
 	$ping = Test-Connection -ComputerName $Computer -Count 1 -Quiet
 	return $ping
 }
+
+
+
 function Test-WinRMStatus {
 	param (
 		[Parameter(Mandatory = $true)]
@@ -21,6 +24,9 @@ function Test-WinRMStatus {
 		return $false
 	}
 }
+
+
+
 function Test-oldWinRMStatus{
 	param (
 		[Parameter(Mandatory = $true)]
@@ -36,6 +42,9 @@ function Test-oldWinRMStatus{
 		return $false
 	}
 }
+
+
+
 function Get-Password {
 	function Get-RandomCharacters($LENGTH, $CHARACTERS) {
 		$RANDOM_INDICES = 1..$LENGTH | ForEach-Object { Get-Random -Maximum $CHARACTERS.LENGTH }
@@ -59,6 +68,9 @@ function Get-Password {
 	Write-Host "$GENERATED_PASSWORD"
 	Write-Host ""
 }
+
+
+
 function Get-LatestVersion {
 	param (
 	[string]$REPOSITORY
@@ -77,6 +89,9 @@ function Get-LatestVersion {
 	$LATESTREPOVERSION = (Invoke-RestMethod -Uri "https://api.github.com/repos/$REPOSITORY/releases/latest").tag_name
 	Write-Output "Latest $REPOSITORYNAME version: $LATESTREPOVERSION "
 }
+
+
+
 function Export-FirefoxProfile {
 	param (
 		[switch]$VERBOSE
@@ -174,6 +189,9 @@ function Export-FirefoxProfile {
 
 	Write-Host "Firefox profile backup complete. Firefox has been restarted."
 }
+
+
+
 function Import-FirefoxProfile {
 	param (
 		[switch]$VERBOSE
@@ -233,6 +251,29 @@ function Import-FirefoxProfile {
 		Write-Host "No Firefox profile backup found in the specified path."
 	}
 }
+
+
+
+function Get-ComputerUser {
+	param (
+		[Parameter(Mandatory = $true)]
+		[ValidateNotNullOrEmpty()]
+		[string]$Computer
+	)
+	
+	if (-Not (Test-OnlineStatus -Computer $Computer)) {
+                Write-Host "$Computer`tN/A"
+		return
+
+	}  
+	$OUTPUT = query user /server:$Computer
+	$USER = ($OUTPUT -split "`r`n")[1] -split "\s+" | Select-Object -Index 1
+	$SESSIONSTATUS = ($OUTPUT -split "`r`n")[1] -split "\s+" | Select-Object -Index 4
+	Write-Host "$Computer`tUser: $USER `t($SESSIONSTATUS)"
+}
+
+
+
 function Get-oldUser {
 	param (
 		[Parameter(Mandatory=$true)]
@@ -245,7 +286,10 @@ function Get-oldUser {
 		return
 	}
 	query user /server:$Computer
-}
+} 
+
+
+
 function Get-ComputerModel{
 	param (
 		[Parameter(Mandatory=$true)]
@@ -261,6 +305,9 @@ function Get-ComputerModel{
 	Write-Host -NoNewline "$Computer`tModel: "
 	(Get-CimInstance -ComputerName $Computer -ClassName Win32_ComputerSystem).Model
 }
+
+
+
 function Get-CPUModel {
 	param (
 		[Parameter(Mandatory = $true)]
@@ -276,6 +323,9 @@ function Get-CPUModel {
         Write-Host -NoNewline "$Computer`tCPU: "
         (Get-CimInstance -ComputerName $Computer -ClassName Win32_Processor).Name
 }
+
+
+
 function Get-GPUModel {
 	param (
 		[Parameter(Mandatory = $true)]
@@ -293,6 +343,9 @@ function Get-GPUModel {
 		Write-Host "$Computer - GPU:`t $($GPU.Name)"
 	}
 }
+
+
+
 function Get-MemoryCapacity {
 	param (
 		[Parameter(Mandatory = $true)]
@@ -308,6 +361,9 @@ function Get-MemoryCapacity {
 		$MEMORY = (Get-CimInstance -ComputerName $Computer -ClassName Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum / 1GB
         Write-Host "$Computer`tMemory: $MEMORY GB"
 }
+
+
+
 function Get-DiskInformation {
 	param (
 		[Parameter(Mandatory = $true)]
@@ -327,6 +383,9 @@ function Get-DiskInformation {
 		Write-Host "$Computer Disk ($($disk.DeviceID)):`t Size = $SizeInGB GB, Type = $MediaType"
 	}
 }
+
+
+
 function Get-WindowsBuild{
 	param (
 		[Parameter(Mandatory=$true)]
@@ -341,7 +400,10 @@ function Get-WindowsBuild{
 
 	Write-Host -NoNewline "$Computer`tBuild: "
 	(Get-CimInstance  -ComputerName $Computer -ClassName Win32_OperatingSystem).BuildNumber
-}
+} 
+
+
+
 function Get-WindowsVersion{
 	param (
 		[Parameter(Mandatory=$true)]
@@ -380,7 +442,159 @@ function Get-WindowsVersion{
 	$buildNumber = (Get-CimInstance -ComputerName $Computer -ClassName Win32_OperatingSystem).BuildNumber
 	$winVersion = $BuildNumberToWindowsVersion[$buildNumber]
 	Write-Host "$Computer`t$winVersion"
+} 
+
+
+
+<# 
+
+function Get-AllMailboxes {
+	$UserCredential = Import-Clixml -Path C:\Users\Pascal\tkm.cred
+	$Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://tkm-sv-ex01.tkm.local/PowerShell/ -Authentication Kerberos -Credential $UserCredential
+	Import-PSSession $Session -DisableNameChecking
+		Get-Recipient -ResultSize Unlimited | 
+		Select-Object DisplayName,
+			@{Name="Type";Expression={$_.RecipientType}},
+			PrimarySmtpAddress,
+			@{Name="EmailAddresses";Expression={($_.EmailAddresses | Where-Object {$_ -clike "smtp*"} | ForEach-Object {$_ -replace "smtp:",""}) -join ","}} |
+			Sort-Object DisplayName | 
+			Out-GridView
+	Remove-PSSession $Session
 }
+
+#>
+
+function Convert-ToMacAddress {
+	param (
+		[string]$macAddress
+	)
+	if ($macAddress -match "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$") {
+		$macAddress = $macAddress -replace '[:-]', ''
+		$macAddress = $macAddress.ToUpper()
+		$macAddress = $macAddress -replace '(.{2})', '$1:'
+		$macAddress = $macAddress.TrimEnd(':')
+		return $macAddress
+	} 
+	
+	if ($macAddress -match "^([0-9A-Fa-f]{12})$") {
+		$macAddress = $macAddress.ToUpper()        
+		$macAddress = $macAddress -replace '(.{2})', '$1:'
+		$macAddress = $macAddress.TrimEnd(':')
+		return $macAddress
+	}
+
+	Write-Host "Invalid MAC address."
+	return $null
+}
+
+function Get-IPMILicense {
+	param (
+		[string]$macAddress
+	)
+
+	if ($macAddress -ne '') { 
+		$VALIDMAC = Convert-ToMacAddress $macAddress
+		if ($VALIDMAC -eq $null) { break } 
+	}
+
+	if ($macAddress -eq '') {
+		Write-Output ""
+		Write-Host "Enter MAC-Address of SuperMicro IPMI Interface."
+		$MBMACADDR = (Read-Host "MAC-Address").Replace(' ', '').Replace(':', '').Replace('-', '')
+		$VALIDMAC = Convert-ToMacAddress $MBMACADDR
+		Write-Output ""
+		if ($VALIDMAC -eq $null) { break } 
+	}
+
+	$MACBYTES = [System.Linq.Enumerable]::Range(0, $MBMACADDR.Length / 2) | ForEach-Object { [Convert]::ToByte($MBMACADDR.Substring($_ * 2, 2), 16) }
+	$MACSHA1 = New-Object System.Security.Cryptography.HMACSHA1
+	$MACSHA1.Key = [Convert]::FromHexString('8544E3B47ECA58F9583043F8')
+	$HASHBYTES = $MACSHA1.ComputeHash($MACBYTES)
+	$HASHHEX = ([BitConverter]::ToString($HASHBYTES) -replace '-').Substring(0, 24)
+	$LICENSEKEY = ($HASHHEX -split "(.{4})", 6 | Where-Object { $_ }) -join '-'
+	Write-Output "`tMAC-Address:"
+	Write-Output "`t$VALIDMAC"
+	Write-Output ""
+	Write-Output "`tLicense Key:"
+	Write-Output "`t$LICENSEKEY "
+	Write-Output ""
+}
+
+
+
+function Get-Gaps { 
+	[CmdletBinding()]
+	param (
+        	[switch]$NB,
+        	[switch]$WS,
+        	[switch]$Notebook,
+        	[switch]$Notebooks,
+        	[switch]$Workstation,
+        	[switch]$Workstations
+	)
+
+	$hostnameRanges = @(
+        	"KTS-MG-NB", "001", "004",
+        	"KTS-MG-WS", "001", "006",
+        	"TKM-MG-NB", "001", "035",
+        	"TKM-MG-WS", "001", "085",
+        	"TKS-MG-NB", "001", "022",
+        	"TKS-MG-WS", "001", "004"
+	)
+    
+	$missingComputers = @()
+
+	for ($i = 0; $i -lt $hostnameRanges.Length; $i += 3) {
+        	$prefix = $hostnameRanges[$i]
+        	$start = [int]$hostnameRanges[$i + 1]
+        	$end = [int]$hostnameRanges[$i + 2]
+
+        	for ($j = $start; $j -le $end; $j++) {
+                	$computerName = "{0}{1:D3}" -f $prefix, $j
+
+        	    	$matchNB = $NB -or $Notebook -or $Notebooks
+        	    	$matchWS = $WS -or $Workstation -or $Workstations
+			$matchANY = $matchNB -or $matchWS
+
+        		if (($matchNB -and $prefix -like "*-NB*") -or ($matchWS -and $prefix -like "*-WS*")) {
+        	        	if (-not (Get-ADComputer -Filter {Name -eq $computerName})) {
+        	        		$missingComputers += $computerName
+        	        	}
+        		} else {
+				if (-not $matchANY) { 
+					if (-not (Get-ADComputer -Filter {Name -eq $computerName})) {
+						$missingComputers += $computerName
+			    		}
+		    		}
+			}
+        	}
+	}
+	if ($missingComputers) {
+        	Write-Host "Unused Hostnames: "
+        	$missingComputers
+    	}
+}
+
+
+function Get-ComputerList {
+	$COMPUTERS = Get-ADComputer -Filter *
+	$COMPUTERINFO = @()
+	
+	foreach ($COMPUTER in $COMPUTERS) {
+		$LASTLOGONDATE = Get-ADComputer $COMPUTER -Properties lastLogonDate, Description, DistinguishedName | 
+		Select-Object Name, Description, LastLogonDate, 
+			@{Name="Location"; Expression={
+				$ouComponents = ($_ | Select-Object -ExpandProperty DistinguishedName) -replace '^(CN|OU)=[^,]+,|,DC[^,]+', '' -split '(?<=OU=.+?)(?=OU=)' | ForEach-Object { $_ -replace 'OU=', '' } | ForEach-Object { $_.Trim(',') }    
+				[array]::Reverse($ouComponents)
+				$ouString = "tkm.local/" + ($ouComponents -join '/')
+				$ouString
+	    			}
+			}
+		$COMPUTERINFO += $LASTLOGONDATE
+	}
+	$COMPUTERINFO | Where-Object { $_.Location -ne $null } | Out-GridView
+}
+    
 
 function Get-LockedADAccounts {
 	$lockedOutAccounts = Search-AdAccount -LockedOut
@@ -391,6 +605,9 @@ function Get-LockedADAccounts {
 		$lockedOutAccounts | Select-Object $selectedProperties
 	}
 }
+
+
+
 function Test-Credentials {
 	[CmdletBinding()]
 	Param (
@@ -421,6 +638,9 @@ function Test-Credentials {
 		Write-Warning "Credentials for $UserName were incorrect."
 	}
 }
+
+
+
 function Test-ADCredentials {
 	[CmdletBinding()]
 	Param (
@@ -449,6 +669,9 @@ function Test-ADCredentials {
 		}
 	}
 }
+
+
+
 function Test-DefaultCredentials {
 	[CmdletBinding()]
 	Param (
@@ -482,6 +705,9 @@ function Test-DefaultCredentials {
 		Write-Host "$UserName is not using any of the default passwords."
 	}
 }
+
+
+
 function Unlock-ADAccount {
 	param (
 		[Parameter(Mandatory = $true)]
@@ -501,6 +727,8 @@ function Unlock-ADAccount {
 		Write-Host "Error: $_"
 	}
 }
+
+
 function Start-WSUSCheckin {
 	param (
 		[Parameter(Mandatory=$true)]
@@ -593,6 +821,9 @@ function Start-WSUSCheckin {
 		}
 	#>
 }
+
+
+
 function Merge-Module {
         param (
 		[string] $ModuleName,
@@ -612,3 +843,7 @@ function Merge-Module {
         }
         Copy-Item -Path "$ModulePathSource\$ModuleName.psd1" "$ModulePathTarget\$ModuleName.psd1"
 }
+
+
+
+

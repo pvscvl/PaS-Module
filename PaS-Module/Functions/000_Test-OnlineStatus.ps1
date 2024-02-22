@@ -8,3 +8,4 @@ function Test-OnlineStatus {
 	return $ping
 }
 
+
