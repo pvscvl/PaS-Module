@@ -1,3 +1,22 @@
+<#
+.Synopsis
+Verify Active Directory credentials
+.DESCRIPTION
+This function verifies AD User Credentials. The function returns result as boolean.
+.NOTES   
+Name: Test-ADCredentials
+Version: 1.5
+.PARAMETER UserName
+Samaccountname of AD user account
+.PARAMETER Password
+Password of AD User account
+.EXAMPLE
+Test-ADCredentials -username username1 -password Password1!
+Test-ADCredentials Toni PWTest#12345
+Description:
+Verifies if the username and password provided are correct, returning either true or false based on the result
+#>
+
 function Test-ADCredentials {
 	[CmdletBinding()]
 	Param (
