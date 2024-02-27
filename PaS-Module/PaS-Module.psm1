@@ -450,7 +450,22 @@ function New-ScriptMessage {
 		Write-Host ""
 	}
 	
+function Get-Uptime {
+	param (
+		[Parameter(Mandatory = $true)]
+		[ValidateNotNullOrEmpty()]
+		[string]$Computer
+	)
 	
+	if (-Not (Test-WinRMStatus -Computer $Computer)) {
+		Write-Host "$Computer`tN/A"
+		return
+	}
+	
+	$LastBootUpTime = (Get-CimInstance -ComputerName $Computer -ClassName Win32_OperatingSystem).LastBootUpTime
+	$Uptime = New-TimeSpan -Start $LastBootUpTime -End (Get-Date)
+	Write-Host "$Computer - System Uptime:`t $($Uptime.Days) days $($Uptime.Hours) hours $($Uptime.Minutes) minutes"
+}
 	
 	function Get-LatestVersion {
 		param (
