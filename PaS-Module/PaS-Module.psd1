@@ -1,10 +1,10 @@
 @{
-	ModuleVersion = '0.1.1'
+	ModuleVersion = '0.1.5'
 	GUID = '55db66c7-37e0-4a80-9d41-7e5136282c2c'
 	Author = 'Pascal Schoofs'
 	Description = 'Useful Functions'
 	PowerShellVersion = '7.4.1'
-	FunctionsToExport = @('Get-LockedADAccounts', 'Unlock-AdAccount', 'New-ScriptMessage', 'Get-InstalledSoftware', 'Add-LocalAdminonRemote', 'Sync-WSUSClient', 'Send-Mail', 'Get-MACAddress', 'Convert-ToMacAddress', 'Get-IPMILicense',  'Get-Gaps', 'Get-ComputerList', 'Merge-Module', 'Export-FirefoxProfile', 'Import-FirefoxProfile', 'Test-Credentials', 'Test-DefaultCredentials', 'Test-ADCredentials', 'Get-Password', 'Test-OnlineStatus', 'Test-WinRMStatus', 'Get-ComputerUser', 'Get-WindowsBuild', 'Get-ComputerModel', 'Get-CPUModel', 'Get-GPUModel', 'Get-DiskInformation', 'Get-MemoryCapacity', 'Get-WindowsVersion', 'Test-oldWinRMStatus', 'Get-oldUser', 'Start-WSUSCheckin')
+	FunctionsToExport = @('Add-LocalAdmin', 'Add-LocalAdminonRemote', 'Convert-ToMacAddress', 'Export-FirefoxProfile', 'Get-ComputerList', 'Get-ComputerModel', 'Get-ComputerUser', 'Get-CPUModel', 'Get-DiskInformation', 'Get-Gaps', 'Get-GPUModel', 'Get-InstalledSoftware', 'Get-IPMILicense', 'Get-LatestVersion', 'Get-LockedADAccounts', 'Get-MACAddress', 'Get-MemoryCapacity', 'Get-oldUser', 'Get-Password', 'Get-WindowsBuild', 'Get-WindowsVersion', 'Import-FirefoxProfile', 'Merge-Module', 'New-ScriptMessage', 'Send-Mail', 'Start-WSUSCheckin', 'sync-WsusClient', 'Test-ADCredentials', 'Test-Credentials', 'Test-DefaultCredentials', 'Test-oldWinRMStatus', 'Test-OnlineStatus', 'Test-WinRMStatus', 'Unlock-ADAccount')
 	RootModule = 'PaS-Module.psm1'
 	CompatiblePSEditions = @('Core')
 	AliasesToExport = @()
