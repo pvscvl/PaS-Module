@@ -23,6 +23,7 @@ function Test-ADCredentials {
 		[string]$UserName,
 		[string]$Password
 	)
+	Write-Host "TEST"
 	if (!($UserName) -or !($Password)) {
 		Write-Warning 'Test-ADCredential: Please specify both user name and password'
 	} else {
@@ -31,36 +32,29 @@ function Test-ADCredentials {
 		$user = [System.DirectoryServices.AccountManagement.UserPrincipal]::FindByIdentity($DS, $UserName)
 
 		$UserAccount = [System.DirectoryServices.AccountManagement.UserPrincipal]::FindByIdentity($DS, $UserName)
-		if ($UserAccount -ne $null) {
-			if ($null -ne $UserAccount.AccountLockoutTime) {
-			Write-Warning "Account of $UserName is locked."
-			return $null
-			}
-		}
+
+
+	if ($ADUserExists -eq "false"){
+		Write-Warning "$UserName does not exist"
+		return $null
+	}
 	
-
-
-	#	if ($user) {
-	#		if ($User.AccountLockoutTime -ne $null) {
-	#		if ($null -ne $User.AccountLockoutTime) {
-	#			$User.UnlockAccount()
-	#			Write-Host "Account of $UserName unlocked."
-	#			Write-Host "Account of $User unlocked."
-	#		}
-	#	}
+	$ADUserLockedOut = (Get-ADuser -Identity $UserName -Properties *).LockedOut
+	if ($ADUserLockedOut -eq "true"){
+		Write-Warning "Account of $UserName is locked."
+		return $null
+	}
 		$VALIDCRED = $DS.ValidateCredentials($UserName, $Password)
 		if ($VALIDCRED) {
 			Write-Output "Credentials for $UserName were correct."
 		} else {
 			Write-Warning "Credentials for $UserName were incorrect."
 			$UserAccount = [System.DirectoryServices.AccountManagement.UserPrincipal]::FindByIdentity($DS, $UserName)
-
-			if ($UserAccount -ne $null) {
-				if ($null -ne $UserAccount.AccountLockoutTime) {
-					Write-Warning "Account of $UserName is locked."
-					$UserAccount.UnlockAccount()
-					Write-Host "Account of $UserAccount unlocked."
-				}
+			$ADUserLockedOut = (Get-ADuser -Identity $UserName -Properties *).LockedOut
+			if ($ADUserLockedOut -eq "true"){
+				Write-Warning "Account of $UserName is locked. Unlocking..."
+				$UserAccount.UnlockAccount()
+				Write-Host "Account of $UserAccount is now unlocked."
 			}
 
 		}

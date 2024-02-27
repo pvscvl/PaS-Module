@@ -12,11 +12,17 @@ function Test-DefaultCredentials {
 	$DS = New-Object System.DirectoryServices.AccountManagement.PrincipalContext('domain')
 
 	$UserAccount = [System.DirectoryServices.AccountManagement.UserPrincipal]::FindByIdentity($DS, $UserName)
-	if ($UserAccount -ne $null) {
-		if ($null -ne $UserAccount.AccountLockoutTime) {
+
+
+	if ($ADUserExists -eq "false"){
+		Write-Warning "$UserName does not exist"
+		return $null
+	}
+	
+	$ADUserLockedOut = (Get-ADuser -Identity $UserName -Properties *).LockedOut
+	if ($ADUserLockedOut -eq "true"){
 		Write-Warning "Account of $UserName is locked."
 		return $null
-		}
 	}
 
 
@@ -28,15 +34,16 @@ function Test-DefaultCredentials {
 				$passwordFound = $true
 				break
 			} else {
-				Write-Warning "Credentials for $UserName were incorrect."
+				$PasswordPrefix = $PASSWORD.Substring(0, 3)
+				Write-Host "Default ${PasswordPrefix}-Credentials for $UserName are not used."
 				$UserAccount = [System.DirectoryServices.AccountManagement.UserPrincipal]::FindByIdentity($DS, $UserName)
 	
-				if ($UserAccount -ne $null) {
-					if ($null -ne $UserAccount.AccountLockoutTime) {
-						Write-Warning "Account of $UserName is locked."
-						$UserAccount.UnlockAccount()
-						Write-Host "Account of $UserAccount unlocked."
-					}
+			
+				$ADUserLockedOut = (Get-ADuser -Identity $UserName -Properties *).LockedOut
+				if ($ADUserLockedOut -eq "true"){
+					Write-Warning "Account of $UserName is locked. Unlocking..."
+					$UserAccount.UnlockAccount()
+					Write-Host "Account of $UserAccount is now unlocked."
 				}
 			}
 	}		
