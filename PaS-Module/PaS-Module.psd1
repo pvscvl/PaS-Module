@@ -4,7 +4,7 @@
 	Author = 'Pascal Schoofs'
 	Description = 'Useful Functions'
 	PowerShellVersion = '7.4.1'
-	FunctionsToExport = @('Add-LocalAdmin', 'Add-LocalAdminonRemote', 'Convert-ToMacAddress', 'Export-FirefoxProfile', 'Get-ComputerList', 'Get-ComputerModel', 'Get-ComputerUser', 'Get-CPUModel', 'Get-DiskInformation', 'Get-Gaps', 'Get-GPUModel', 'Get-InstalledSoftware', 'Get-IPMILicense', 'Get-LatestVersion', 'Get-LockedADAccounts', 'Get-MACAddress', 'Get-MemoryCapacity', 'Get-oldUser', 'Get-Password', 'Get-WindowsBuild', 'Get-WindowsVersion', 'Import-FirefoxProfile', 'Merge-Module', 'New-ScriptMessage', 'Send-Mail', 'Start-WSUSCheckin', 'sync-WsusClient', 'Test-ADCredentials', 'Test-Credentials', 'Test-DefaultCredentials', 'Test-oldWinRMStatus', 'Test-OnlineStatus', 'Test-WinRMStatus', 'Unlock-ADAccount')
+	FunctionsToExport = @('Get-Uptime', 'Add-LocalAdmin', 'Add-LocalAdminonRemote', 'Convert-ToMacAddress', 'Export-FirefoxProfile', 'Get-ComputerList', 'Get-ComputerModel', 'Get-ComputerUser', 'Get-CPUModel', 'Get-DiskInformation', 'Get-Gaps', 'Get-GPUModel', 'Get-InstalledSoftware', 'Get-IPMILicense', 'Get-LatestVersion', 'Get-LockedADAccounts', 'Get-MACAddress', 'Get-MemoryCapacity', 'Get-oldUser', 'Get-Password', 'Get-WindowsBuild', 'Get-WindowsVersion', 'Import-FirefoxProfile', 'Merge-Module', 'New-ScriptMessage', 'Send-Mail', 'Start-WSUSCheckin', 'sync-WsusClient', 'Test-ADCredentials', 'Test-Credentials', 'Test-DefaultCredentials', 'Test-oldWinRMStatus', 'Test-OnlineStatus', 'Test-WinRMStatus', 'Unlock-ADAccount')
 	RootModule = 'PaS-Module.psm1'
 	CompatiblePSEditions = @('Core')
 	AliasesToExport = @()
