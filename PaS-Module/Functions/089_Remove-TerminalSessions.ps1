@@ -13,9 +13,9 @@ function Remove-TerminalSessions {
         Param (
             [Parameter(Position = 0, Mandatory = $true)]$brokerFQDN
         )
-
+		$brokerFQDN = "tkm-sv-ts01.tkm.local"
         $query = Get-RDUserSession -ConnectionBroker $brokerFQDN -ErrorAction Stop |
-        Select-Object Collectionname, domainname, username, hostserver, unifiedsessionid, sessionstate |
+        Select-Object hostserver, domainname, username, sessionstate, unifiedsessionid  |
         Out-GridView -PassThru -Title 'Select a User Session or sessions to Remove'
         foreach ($prompt in $query) {
             $hostserver = $prompt.hostserver
@@ -27,7 +27,9 @@ function Remove-TerminalSessions {
     }
 
     try {
-        $BrokerFQDN = (Get-WmiObject win32_computersystem).DNSHostName + "." + (Get-WmiObject win32_computersystem).Domain
+    #    $BrokerFQDN = (Get-WmiObject win32_computersystem).DNSHostName + "." + (Get-WmiObject win32_computersystem).Domain
+	#	$BrokerFQDN = "tkm-sv-ts01" + "." + (Get-WmiObject win32_computersystem).Domain
+		$BrokerFQDN = "tkm-sv-ts01.tkm.local"
         remove-session -brokerFQDN $BrokerFQDN
     }
     catch {
@@ -35,3 +37,5 @@ function Remove-TerminalSessions {
         remove-session -brokerFQDN $BrokerFQDN
     }
 }
+
+
