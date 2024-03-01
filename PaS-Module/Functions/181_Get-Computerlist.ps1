@@ -10,10 +10,9 @@ function Get-ComputerList {
 				[array]::Reverse($ouComponents)
 				$ouString = "tkm.local/" + ($ouComponents -join '/')
 				$ouString
-	    			}
+				}
 			}
 		$COMPUTERINFO += $LASTLOGONDATE
 	}
 	$COMPUTERINFO | Where-Object { $_.Location -ne $null } | Out-GridView
 }
-    

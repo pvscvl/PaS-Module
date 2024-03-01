@@ -1,12 +1,11 @@
 function Get-TerminalSessions {
-
-	$brokerFQDN = "tkm-sv-ts01.tkm.local"
-    try {
-		Get-RDUserSession -ConnectionBroker $brokerFQDN -ErrorAction Ignore | Select-Object hostserver, domainname, username, sessionstate, unifiedsessionid | ft
-    }
-    catch {
-        Write-Warning "Error"
-    }
+	[CmdletBinding()]
+	$BrokerFQDN = "tkm-sv-ts01.tkm.local"
+	try {
+		Get-RDUserSession -ConnectionBroker $BrokerFQDN -ErrorAction Ignore | Select-Object hostserver, domainname, username, sessionstate, unifiedsessionid | ft
+	}catch {
+		Write-Warning "Something went wrong."
+	}
 }
 
 
