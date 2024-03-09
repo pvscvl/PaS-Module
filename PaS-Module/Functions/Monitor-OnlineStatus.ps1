@@ -1,5 +1,8 @@
 function Monitor-OnlineStatus {
 	param (
+ 		[Cmdletbinding()]
+     		[Parameter(Mandatory = $true)]
+		[ValidateNotNullOrEmpty()]
         	[string]$Target
 	)
 
