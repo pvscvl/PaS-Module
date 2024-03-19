@@ -4,7 +4,7 @@ function Get-WindowsBuild{
 		[ValidateNotNullOrEmpty()]
 		[string]$Computer
 	)
-
+	$Computer = $Computer.ToUpper()
 	if (-Not (Test-WinRMStatus -Computer $Computer)) {
 		Write-Host "$Computer`tN/A"
 		return

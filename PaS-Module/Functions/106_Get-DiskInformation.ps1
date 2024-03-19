@@ -4,7 +4,7 @@ function Get-DiskInformation {
 		[ValidateNotNullOrEmpty()]
 		[string]$Computer
 	)
-	
+	$Computer = $Computer.ToUpper()
 	if (-Not (Get-WinRMStatus -Computer $Computer)) {
 		Write-Host "$Computer`tN/A"
 		return
