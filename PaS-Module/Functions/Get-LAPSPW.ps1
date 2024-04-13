@@ -1,6 +1,8 @@
 function Get-LAPSPW { 
 	[CmdletBinding()]
 	param (
+ 		[Parameter(Mandatory=$true)]
+		[ValidateNotNullOrEmpty()]
 		[string]$ComputerName
 	)
 
