@@ -3,10 +3,12 @@ function Get-LAPSPW {
 	param (
 		[string]$ComputerName
 	)
-	
-	$PASSWORD = (Get-AdmPwdPassword -Computername $ComputerName).Password
-	echo -n $PASSWORD | Set-Clipboard
-	Get-AdmPwdPassword -Computername $ComputerName | Select-Object ComputerName, Password, ExpirationTimeStamp
+
+	try { 
+		$PASSWORD = (Get-AdmPwdPassword -Computername $ComputerName).Password
+		echo -n $PASSWORD | Set-Clipboard
+		Get-AdmPwdPassword -Computername $ComputerName | Select-Object ComputerName, Password, ExpirationTimeStamp
+  	} catch {
+   		return $null
+     	}
 }
-
-
