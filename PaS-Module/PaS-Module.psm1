@@ -869,6 +869,7 @@ function Get-Uptime {
 			$macAddress = $macAddress.ToUpper()
 			$macAddress = $macAddress -replace '(.{2})', '$1:'
 			$macAddress = $macAddress.TrimEnd(':')
+			echo -n $macAddress | Set-Clipboard
 			return $macAddress
 		} 
 		
@@ -876,6 +877,7 @@ function Get-Uptime {
 			$macAddress = $macAddress.ToUpper()        
 			$macAddress = $macAddress -replace '(.{2})', '$1:'
 			$macAddress = $macAddress.TrimEnd(':')
+			echo -n $macAddress | Set-Clipboard
 			return $macAddress
 		}
 	

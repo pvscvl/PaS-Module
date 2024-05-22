@@ -10,12 +10,12 @@ function Get-Gaps {
 	)
 
 	$hostnameRanges = @(
-		"KTS-MG-NB", "001", "004",
-		"KTS-MG-WS", "001", "006",
-		"TKM-MG-NB", "001", "035",
-		"TKM-MG-WS", "001", "085",
-		"TKS-MG-NB", "001", "022",
-		"TKS-MG-WS", "001", "004"
+		"KTS-MG-NB", "001", "010",
+		"KTS-MG-WS", "001", "010",
+		"TKM-MG-NB", "001", "040",
+		"TKM-MG-WS", "001", "090",
+		"TKS-MG-NB", "001", "025",
+		"TKS-MG-WS", "001", "010"
 	)
 
 	$missingComputers = @()
