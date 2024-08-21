@@ -1,4 +1,5 @@
 function Test-WinRMStatus {
+	[CmdletBinding()]
 	param (
 		[Parameter(Mandatory = $true)]
 		[ValidateNotNullOrEmpty()]

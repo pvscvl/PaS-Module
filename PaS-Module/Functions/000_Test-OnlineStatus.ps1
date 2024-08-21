@@ -1,4 +1,5 @@
 function Test-OnlineStatus {
+	[CmdletBinding()]
 	param (
 		[Parameter(Mandatory = $true)]
 		[ValidateNotNullOrEmpty()]

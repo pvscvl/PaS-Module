@@ -1,5 +1,6 @@
 function Test-oldWinRMStatus{
 	param (
+		[CmdletBinding()]
 		[Parameter(Mandatory = $true)]
 		[ValidateNotNullOrEmpty()]
 		[string]$Computer
